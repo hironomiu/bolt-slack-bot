@@ -1,8 +1,10 @@
-const { App } = require("@slack/bolt")
-const schedule = require("node-schedule")
-const axios = require("axios")
-const qs = require("qs")
-const dotenv = require("dotenv")
+import pkg from "@slack/bolt"
+import schedule from "node-schedule"
+import axios from "axios"
+import qs from "qs"
+import dotenv from "dotenv"
+import { restaurants } from "./data.js"
+const { App } = pkg
 dotenv.config({ path: "./.env.local" })
 
 const app = new App({
@@ -19,23 +21,12 @@ const app = new App({
     .catch((error) => {
       consol.log(error)
     })
-  console.log("Bolt lunch app is running!")
+  console.log("Bolt Slack Bot App is running!")
 })()
 
 const getRandomNum = (max) => {
   return Math.floor(Math.random() * Math.floor(max))
 }
-
-const restaurants = [
-  {
-    name: "春秋ユラリ 恵比寿",
-    url: "https://tabelog.com/tokyo/A1303/A130302/13051136/",
-  },
-  {
-    name: "皇綱家",
-    url: "https://tabelog.com/tokyo/A1305/A130501/13253828/",
-  },
-]
 
 const createBlocks = () => {
   const restaurant = restaurants[getRandomNum(restaurants.length)]
@@ -44,7 +35,7 @@ const createBlocks = () => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `:shallow_pan_of_food:<${restaurant.url}|${restaurant.name}>はいかかですか？`,
+        text: `:shallow_pan_of_food:<今日は${restaurant.url}|${restaurant.name}>がおすすめ！？`,
       },
       accessory: {
         type: "button",
@@ -60,11 +51,11 @@ const createBlocks = () => {
       elements: [
         {
           type: "button",
+          action_id: "find_another",
           text: {
             type: "plain_text",
             text: "他のお店をみる",
           },
-          action_id: "find_another",
         },
       ],
     },
@@ -72,8 +63,8 @@ const createBlocks = () => {
   return blocks
 }
 
-app.message("hello", async ({ message, say }) => {
-  await say(`hello ${message.user}`)
+app.message("fuga", async ({ message, say }) => {
+  await say(`fuga ${message.user}`)
 })
 
 app.command("/lunch", async ({ ack, respond }) => {

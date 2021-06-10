@@ -1,5 +1,7 @@
 # bolt-slack-bot
 
+[Bolt 公式](https://slack.dev/bolt-js/concepts)
+
 ## Settings
 
 ```
@@ -105,6 +107,12 @@ found 0 vulnerabilities
 ```
 
 `.env.local`の`SLACK_BOT_SIGNING_SECRET`に[api.slack.com](https://api.slack.com/apps) -> 「Basic Information」 -> 「Signing Secret」の値を設定
+
+ES module 化(package.json に以下を追記)
+
+```
+"type": "module",
+```
 
 ### ボタン
 
